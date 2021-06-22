@@ -1,8 +1,11 @@
-# Trading Assistant Project Design Doc
+# Trading Assistant Project
 
-Jiawei Zhang
+Author: Jiawei Zhang [June, 2021]
 
-June, 2021
+To test run the project, make sure you populate the My_Portfolio.xlsx or My_Portfolio.csv file with tickers of you choice, and run 
+following command in terminal
+
+    python main.py
 
 **Project Overview**
 
@@ -14,7 +17,7 @@ The project deliverable will contain a python program that takes in a form of po
 
 **Project Timeline and Milestones**
 
-**Milestone 1: Project Module Setup and Portfolio Acquisition Module (Week 1)**
+**Milestone 1: Project Module Setup and Portfolio Acquisition Module (Completed on June 22, 2021)**
 
 Milestone 1 should prepare project repository and understand how to properly setup Python projects with easy imports and modulations. Once the project is setup, build the portfolio acquisition module designed to consume and parse local data stored in csv or excel. All portfolio data should be stored in respective data structures along with investment rules
 
