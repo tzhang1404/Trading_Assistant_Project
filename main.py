@@ -1,4 +1,10 @@
-from Modules.Portfolio_Acquisition.Portfolio_Data_Reader import Data_Reader
+from Modules.Portfolio_Acquisition.Portfolio_Data import Portfolio_Data
+# from Modules.Portfolio_Acquisition.Portfolio_Stock import Portfolio_Stock
 
-df = Data_Reader.read_excel()
-print(df.iloc[0]["ticker"])
+
+
+def main():
+    portfolio_data = Portfolio_Data.from_reading_data()
+    print(portfolio_data.get_all_stocks())
+
+main()

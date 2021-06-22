@@ -1,12 +1,11 @@
 import pandas as pd
 
-class Data_Reader:
-    
-    PORTFOLIO_FILE_NAME = "My_Portfolio"
+from ..Constants.constants import PORTFOLIO_FILE_NAME
 
+class Data_Reader:
     def read_excel(path: str="") -> pd.DataFrame:
         try:
-            df = pd.read_excel(path + Data_Reader.PORTFOLIO_FILE_NAME + ".xlsx")        
+            df = pd.read_excel(path + PORTFOLIO_FILE_NAME + ".xlsx")        
         except Exception as e:
             print("Failed to read excel file")
             print(e)
@@ -16,7 +15,7 @@ class Data_Reader:
 
     def read_csv(path: str="") -> pd.DataFrame:
         try:
-            df = pd.read_csv(path + Data_Reader.PORTFOLIO_FILE_NAME + ".csv")        
+            df = pd.read_csv(path + PORTFOLIO_FILE_NAME + ".csv")        
         except Exception as e:
             print("Failed to read csv file")
             print(e)

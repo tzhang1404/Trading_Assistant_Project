@@ -3,6 +3,7 @@ import pandas as pd
 
 from Modules.Portfolio_Acquisition.Portfolio_Data_Reader import Data_Reader
 from Modules.Portfolio_Acquisition.Portfolio_Stock import Portfolio_Stock
+from Modules.Portfolio_Acquisition.Portfolio_Data import Portfolio_Data
 
 class Test_Portfolio_Acquisition(unittest.TestCase):
 
@@ -47,16 +48,8 @@ class Test_Portfolio_Acquisition(unittest.TestCase):
 
 class Test_Portfolio_Stock(unittest.TestCase):
 
-    '''
-        ticker  purchase_price purchase_date  shares  rules_increase_limit  rules_decrease_limit
-    0   AAPL          210.15    2020-06-01      10                  0.10                   0.2
-    1   ENPH          287.10    2020-06-18       8                  0.80                   0.5
-    2     CD           35.12    2020-06-01      20                  0.15                   0.1
-    3     ZM          300.13    2020-06-18       5                  0.20                   0.5
-    '''
-
     def setUp(self):
-        self.df = Data_Reader.read_excel()
+        self.df = Data_Reader.read_excel(path="")
 
     def tearDown(self):
         pass
@@ -75,5 +68,21 @@ class Test_Portfolio_Stock(unittest.TestCase):
         self.assertEqual(ps.purchase_date, self.df["purchase_date"][0])
         self.assertEqual(type(ps.purchase_date), pd.Timestamp)
 
+
+class Test_Portfolio_Data(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+
+    def test_normal_data_reading(self):
+        port_data = Portfolio_Data.from_reading_data()
+        self.assertEqual(port_data.get_all_stocks(), ['AAPL', 'ENPH', 'CD', 'ZM'])
+        self.assertEqual(type(port_data.get_stock('AAPL')), Portfolio_Stock)
+        self.assertEqual(port_data.get_stock('AAPL').ticker, 'AAPL')
+        
 if __name__ == '__main__':
     unittest.main()
