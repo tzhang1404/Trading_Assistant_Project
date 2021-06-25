@@ -5,7 +5,7 @@ from .Portfolio_Stock import Portfolio_Stock
 from .Portfolio_Data_Reader import Data_Reader
 from ..Constants.constants import PORTFOLIO_HEADERS
 
-class Portfolio_Data: 
+class Portfolio_Stock_Collection: 
 
     @staticmethod
     def sanity_check_portfolio_df(df: pd.DataFrame) -> bool:
@@ -18,16 +18,16 @@ class Portfolio_Data:
         return True
 
     @classmethod
-    def from_reading_data(Portfolio_Data, path: str="", is_csv: bool=False):
+    def from_reading_data(Portfolio_Stock_Collection, path: str="", is_csv: bool=False):
         df = None
         if is_csv:
             df = Data_Reader.read_csv(path=path)
         else:
             df = Data_Reader.read_excel(path=path)
-        return Portfolio_Data(df=df)        
+        return Portfolio_Stock_Collection(df=df)        
 
     def __init__(self, df: pd.DataFrame):
-        if not Portfolio_Data.sanity_check_portfolio_df(df):
+        if not Portfolio_Stock_Collection.sanity_check_portfolio_df(df):
             raise ValueError(f"Dataframe column names does not fit")
         self.portfolio_stocks = {}
         for i in range(df.shape[0]):
