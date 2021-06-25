@@ -6,4 +6,6 @@
 .Spotlight-V100
 .Trashes
 
+*.pyc
+__pycache__
 
