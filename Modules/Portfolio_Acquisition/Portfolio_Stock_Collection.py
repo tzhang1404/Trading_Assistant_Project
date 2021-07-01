@@ -38,6 +38,9 @@ class Portfolio_Stock_Collection:
     def get_stock(self, ticker: str) -> Portfolio_Stock:
         return self.portfolio_stocks[ticker]
     
-    def get_all_stocks(self) -> List[str]:
+    def get_all_tickers(self) -> List[str]:
         return [*self.portfolio_stocks.keys()]
+    
+    def get_all_data_list(self) -> List[Portfolio_Stock]:
+        return [*self.portfolio_stocks.values()]
     

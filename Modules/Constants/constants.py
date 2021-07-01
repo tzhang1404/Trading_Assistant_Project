@@ -13,7 +13,16 @@ IEXFINANCE_TOKEN = "sk_a9b4128fd41d43dd9f03d5a3a9e41d30"
 #used to detect error message type
 FREQUENCY_EXCEPTION_KEY_WORD = "call frequency"
 
+SENDER_EMAIL = "gazi.tony.trading@gmail.com"
 
+RECEIVER_EMAILS = ["gazi.tony.trading@gmail.com"]
+
+EMAIL_PW = "Gazitony1230"
+
+
+class Stock_Action(Enum):
+    PROFIT_SELL = 1
+    LOSS_SELL = 2
 
 class Interval(Enum):
     one_minute = '1min'

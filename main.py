@@ -1,26 +1,25 @@
 from typing import List
 
-from Modules.Portfolio_Acquisition.Portfolio_Stock_Collection import Portfolio_Stock_Collection
+from Modules.Portfolio_Acquisition.Portfolio_Stock_Collection import Portfolio_Stock_Collection as Portfolios
 from Modules.Stock_Data_Acquisition.IEX_Stock_Query import IEX_Stock_Query
-from Modules.Stock_Data_Acquisition.IEX_Stock_Data import IEX_RT_Price_Collection
-
-
-
-def read_stock_list_from_portfolio() -> List[str]:
-    portfolio_data = Portfolio_Stock_Collection.from_reading_data()
-    stock_list = portfolio_data.get_all_stocks()
-    return stock_list
-
-
-def query_stock_prices_from_list(stock_list) -> IEX_RT_Price_Collection:
-    stock_queryer = IEX_Stock_Query()
-    res = stock_queryer.query_multiple_realtime_prices(tickers=stock_list)
-    return res
+from Modules.Performance_Monitoring.Stock_Performance import Stock_Performance_Collection as Performances
+from Modules.Result_Delivery.Email_Sender import Email_Sender
+from Modules.Result_Delivery.Message_Constructor import Message_Constructor
 
 def main():
-    stock_list = read_stock_list_from_portfolio()
-    stock_price_collection = query_stock_prices_from_list(stock_list=stock_list)
-    stock_price_collection.debug_print_all_price()
+    portfolio_stock_collection = Portfolios.from_reading_data()
+    stock_price_collection =IEX_Stock_Query.query_multiple_realtime_prices(tickers=portfolio_stock_collection.get_all_tickers())
+    performance_result_collection = Performances.analyze_all_realtime_price(
+        port_collection=portfolio_stock_collection, 
+        price_collection=stock_price_collection)
+    # performance_result_collection.debug_print_all_performance_result()
+    email_sender = Email_Sender()
+    msg_constructor = Message_Constructor(sp_collection=performance_result_collection)
+    message = msg_constructor.get_message()
+    email_sender.send_message(msg=message)
+    
+
+    
 
     
     

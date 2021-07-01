@@ -34,6 +34,9 @@ class IEX_RT_Price_Collection:
             return self.data_dict[ticker]
         else:
             return None
+
+    def get_all_data_list(self) -> List[IEX_RT_Price]:
+        return [*self.data_dict.values()]
     
     def debug_print_all_price(self) -> None:
         for key, value in self.data_dict.items():
