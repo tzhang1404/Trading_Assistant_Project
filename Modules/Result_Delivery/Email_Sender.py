@@ -11,6 +11,8 @@ class Email_Sender:
         self.context = ssl.create_default_context()
     
     def send_message(self, msg: str, receiver_email: str="gazi.tony.trading@gmail.com"):
+        if msg is None or msg == "":
+            return
         # Try to log in to server and send email
         try:
             server = smtplib.SMTP(Email_Sender.smtp_server,Email_Sender.port)

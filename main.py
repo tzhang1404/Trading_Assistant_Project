@@ -15,12 +15,8 @@ def main():
     # performance_result_collection.debug_print_all_performance_result()
     email_sender = Email_Sender()
     msg_constructor = Message_Constructor(sp_collection=performance_result_collection)
-    message = msg_constructor.get_message()
+    message = msg_constructor.get_action_message()
     email_sender.send_message(msg=message)
-    
-
-    
-
     
     
 

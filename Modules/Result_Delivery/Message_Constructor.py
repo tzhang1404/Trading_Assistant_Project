@@ -13,7 +13,8 @@ class Message_Constructor():
 
     def __init__(self, sp_collection: Stock_Performance_Collection):
         self.sp_collection = sp_collection
-        self.msg_list = []
+        self.action_msg = None
+        self.performance_msg = None
 
         sp_list = self.sp_collection.get_all_stock_performances()
         stock_performance = sp_list[0]
@@ -30,22 +31,27 @@ class Message_Constructor():
         message["From"] = SENDER_EMAIL
         message["To"] = RECEIVER_EMAILS[0]
 
+        action_msg = Message_Constructor.generate_stock_action_message(sp_list) 
+        if action_msg == "":
+            # No stock 
+            return
+
         html = f"""\
                 <html>
                 <body>
                     <h2>Stock Performance for {datetime.date.today()}</h2>
                     <h4>Please update myPortfolio spreadsheet data if actions are executed</h4>
-                    {Message_Constructor.generate_stock_message(sp_list)}
+                    {action_msg}
                 </body>
                 </html>
                 """
         msg_component = MIMEText(html, "html")
         message.attach(msg_component)
 
-        self.msg_list.append(message)
+        self.action_msg = message
 
     @staticmethod
-    def generate_stock_message(sp_list: List[Stock_Performance]) -> str:
+    def generate_stock_action_message(sp_list: List[Stock_Performance]) -> str:
         res_string = "<p>"
         for sp in sp_list:
             action = sp.get_action_result()
@@ -59,6 +65,8 @@ class Message_Constructor():
                                 <br>
                             """
         res_string += "</p>"
+        if res_string == "<p></p>":
+            res_string = ""
         return res_string
     
     @staticmethod
@@ -77,7 +85,10 @@ class Message_Constructor():
             return sp.portfolio_data.increase_limit
 
 
-    def get_message(self) -> str:
-        return self.msg_list[0].as_string()            
+    def get_action_message(self) -> str:
+        if self.action_msg is None:
+            return ""
+        else:
+            return self.action_msg.as_string()            
             
     
