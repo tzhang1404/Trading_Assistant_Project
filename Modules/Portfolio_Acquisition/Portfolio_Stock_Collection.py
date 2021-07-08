@@ -12,7 +12,6 @@ class Portfolio_Stock_Collection:
         if df is None:
             return False
         df_headers = df.columns
-        print(df_headers)
         for header in PORTFOLIO_HEADERS:
             if header not in df_headers:
                 return False
