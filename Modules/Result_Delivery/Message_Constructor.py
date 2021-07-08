@@ -32,9 +32,8 @@ class Message_Constructor():
         message["To"] = RECEIVER_EMAILS[0]
 
         action_msg = Message_Constructor.generate_stock_action_message(sp_list) 
-        # if action_msg == "":
-        #     # No stock 
-        #     return
+        if action_msg == "":
+            action_msg = "No Stock Action Today"
 
         html = f"""\
                 <html>

@@ -10,9 +10,7 @@ class Email_Sender:
         # Create a secure SSL context
         self.context = ssl.create_default_context()
     
-    def send_message(self, msg: str, receiver_email: str="gazi.tony.trading@gmail.com"):
-        if msg is None or msg == "":
-            return
+    def send_message(self, msg: str):
         # Try to log in to server and send email
         try:
             server = smtplib.SMTP(Email_Sender.smtp_server,Email_Sender.port)
@@ -22,6 +20,7 @@ class Email_Sender:
             server.login(SENDER_EMAIL, EMAIL_PW)
             for receiver_email in RECEIVER_EMAILS:
                 server.sendmail(SENDER_EMAIL, receiver_email, msg)
+                print(f"Email sent successfully to {receiver_email}")
 
         except Exception as e:
             # Print any error messages to stdout
