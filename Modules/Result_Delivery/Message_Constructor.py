@@ -17,8 +17,37 @@ class Message_Constructor():
         self.performance_msg = None
 
         sp_list = self.sp_collection.get_all_stock_performances()
-        stock_performance = sp_list[0]
-        
+
+        message = Message_Constructor.generate_message_metadata()
+
+        action_msg = Message_Constructor.generate_stock_action_message(sp_list) 
+        if action_msg == "":
+            action_msg = "No Stock Action Today"
+
+        performance_msg = Message_Constructor.generate_raw_performance_message(sp_list)
+
+        # technical_msg = Message_Constructor.generate_technical_analysis_message(sp_list)
+
+        html = f"""\
+                <html>
+                <body>
+                    <h2>Stock Performance for {datetime.date.today()}</h2>
+                    <h3>--Portfolio Action Result--</h3>
+                    {action_msg}
+                    <h3>--Portfolio Performance Result--</h3>
+                    {performance_msg}
+                    <h3>--Watchlist Technical Analysis Result--</h3>
+                    <p>To be implemented </p>
+                </body>
+                </html>
+                """
+        msg_component = MIMEText(html, "html")
+        message.attach(msg_component)
+
+        self.action_msg = message
+
+    @staticmethod
+    def generate_message_metadata():
         message = MIMEMultipart("alternative")
         hourtime_NY = int(datetime.datetime.now(timezone('America/New_York')).strftime("%H"))
         if hourtime_NY < 12:
@@ -31,23 +60,22 @@ class Message_Constructor():
         message["From"] = SENDER_EMAIL
         message["To"] = RECEIVER_EMAILS[0]
 
-        action_msg = Message_Constructor.generate_stock_action_message(sp_list) 
-        if action_msg == "":
-            action_msg = "No Stock Action Today"
+        return message
 
-        html = f"""\
-                <html>
-                <body>
-                    <h2>Stock Performance for {datetime.date.today()}</h2>
-                    <h4>Please update myPortfolio spreadsheet data if actions are executed</h4>
-                    {action_msg}
-                </body>
-                </html>
-                """
-        msg_component = MIMEText(html, "html")
-        message.attach(msg_component)
+    @staticmethod
+    def generate_raw_performance_message(sp_list: List[Stock_Performance]) -> str: 
+        res_string = "<p>"
+        for sp in sp_list:
+            price_delta = sp.price_delta.rt_price_delta
+            res_string += f"""
+                        <strong>{sp.get_ticker()}</strong><br>
+                        Price Delta Since Purchase: <span style={Message_Constructor._get_stock_delta_style(price_delta)}> {round(100 * price_delta, 2)}% </span><br>
+                        Capital Gain/Loss: ${round(price_delta * sp.portfolio_data.purchase_price * sp.portfolio_data.shares, 2)} <br>
+                        <br>
+                        """
+        res_string += "</p>"
+        return res_string
 
-        self.action_msg = message
 
     @staticmethod
     def generate_stock_action_message(sp_list: List[Stock_Performance]) -> str:
@@ -74,6 +102,14 @@ class Message_Constructor():
             return "background-color:red;color:white;"
         elif action == Stock_Action.PROFIT_SELL:
             return "background-color:green;color:white;"
+
+    @staticmethod
+    def _get_stock_delta_style(value: float) -> str: 
+        if value < 0:
+            return "background-color:red;color:white;"
+        else:
+            return "background-color:green;color:white;"
+
 
     @staticmethod
     def _get_correct_sell_limit(sp: Stock_Performance) -> float:

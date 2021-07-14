@@ -9,7 +9,7 @@ from ..Constants.constants import (
     ALPHAVANTAGE_KEY, 
     FREQUENCY_EXCEPTION_KEY_WORD, 
     Interval)
-from .Stock_Data import Stock_Data, Stock_Data_Storage
+from .AlphaV_Stock_Data import Stock_Data, Stock_Data_Storage
 
 class QueryFrequencyException(Exception):
     '''

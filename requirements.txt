@@ -1,4 +1,4 @@
 pandas
 iexfinance
-openpyxl
 xlrd
+alpha_vantage
