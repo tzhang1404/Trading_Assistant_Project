@@ -6,12 +6,13 @@ from email.mime.multipart import MIMEMultipart
 from typing import List
 
 from ..Performance_Monitoring.Stock_Performance import Stock_Performance, Stock_Performance_Collection
-from ..Constants.constants import SENDER_EMAIL, RECEIVER_EMAILS, Stock_Action
+from ..Technical_Indicators.Indicator_Results import Stock_Result, Stock_Result_Storage
+from ..Constants.constants import Indicator_Signal, SENDER_EMAIL, RECEIVER_EMAILS, Stock_Action
 
 
 class Message_Constructor():
 
-    def __init__(self, sp_collection: Stock_Performance_Collection):
+    def __init__(self, sp_collection: Stock_Performance_Collection, tech_indicator_collection: Stock_Result_Storage):
         self.sp_collection = sp_collection
         self.action_msg = None
         self.performance_msg = None
@@ -26,7 +27,7 @@ class Message_Constructor():
 
         performance_msg = Message_Constructor.generate_raw_performance_message(sp_list)
 
-        # technical_msg = Message_Constructor.generate_technical_analysis_message(sp_list)
+        technical_msg = Message_Constructor.generate_technical_analysis_message(tech_indicator_collection)
 
         html = f"""\
                 <html>
@@ -37,7 +38,7 @@ class Message_Constructor():
                     <h3>--Portfolio Performance Result--</h3>
                     {performance_msg}
                     <h3>--Watchlist Technical Analysis Result--</h3>
-                    <p>To be implemented </p>
+                    {technical_msg}
                 </body>
                 </html>
                 """
@@ -95,6 +96,23 @@ class Message_Constructor():
         if res_string == "<p></p>":
             res_string = ""
         return res_string
+
+    
+    @staticmethod
+    def generate_technical_analysis_message(technical_result_collection: Stock_Performance_Collection) -> str:
+        res = "<p>"
+        for ticker, result in technical_result_collection.result_dict.items():
+            res += f"""
+                    <strong>{ticker}</strong> 
+                    RSI: <span style={Message_Constructor._get_indicator_style(result.get_signal_result("RSI"))}> {result.get_signal_result_str("RSI")} </span> <br>
+                    MACD: <span style={Message_Constructor._get_indicator_style(result.get_signal_result("MACD"))}> {result.get_signal_result_str("MACD")} </span> <br>
+                    BBAND: <span style={Message_Constructor._get_indicator_style(result.get_signal_result("BBAND"))}> {result.get_signal_result_str("BBAND")} </span> <br>
+                    <br>
+                """
+        res += "</p>"
+        if res == "<p></p>":
+            res = ""
+        return res
     
     @staticmethod
     def _get_stock_action_font_style(action: Stock_Action) -> str: 
@@ -108,6 +126,13 @@ class Message_Constructor():
         if value < 0:
             return "background-color:red;color:white;"
         else:
+            return "background-color:green;color:white;"
+
+    @staticmethod
+    def _get_indicator_style(signal: Indicator_Signal) -> str:
+        if signal == Indicator_Signal.Bearish:
+            return "background-color:red;color:white;"
+        elif signal == Indicator_Signal.Bullish:
             return "background-color:green;color:white;"
 
 

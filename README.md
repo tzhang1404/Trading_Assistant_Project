@@ -1,4 +1,4 @@
-# Trading Assistant Project
+# Trading Assistant Project (Completed)
 
 Author: Jiawei Zhang [June, 2021]
 
@@ -10,6 +10,8 @@ following command in terminal
 **Project Overview**
 
 The Trading Assistant Project (TAP) is designed to monitor the performance of my stocks. By tracking a list Robinhood portfolios, TAP can alert users whether if the stock price is within his/her investment strategy, track the performance of different stocks, and provide rudimentary technical analysis results with simple indicators. The goal of the project is not to make trades or to automate the process of decision making, but to serve as an assistant for the user so that the user can set a pre-determined investment rule/thesis and execute the final sell strictly based on how he/she set up the rules. TAP will help the user avoid emotional sell-off by forcing the user to abide by the investment rules, while the technical analysis indicators can help users identify potential buy-ins or sell-offs.
+
+The technical indicators used in this project includes: RSI, MACD, Bollinger Bands
 
 **Project Deliverable**
 
@@ -61,10 +63,7 @@ Milestone 4 will mostly be uncharted territory for me, and the goal is to use al
 
 **Milestone 5: Automation Module (Week 4, 5)**
 
-AWS, dockerization,
+The entire project is now running on AWS EC2 t2.tiny machine, with a scheduled cronjob to run twice everyday. The first excution will take place 30 mins after the market opens and the second execution will take place 30 mins before the market closes. This design is to give time to the user (myself) time to act if there is an action recommended to me. 
 
 **Milestone 6: Portfolio Research and Selection (Week 5)**
-
-**Stretch Goals**
-
-Reply to email
+Completed at my own discretion. 

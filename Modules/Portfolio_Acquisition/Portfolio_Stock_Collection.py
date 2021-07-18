@@ -30,11 +30,13 @@ class Portfolio_Stock_Collection:
         if not Portfolio_Stock_Collection.sanity_check_portfolio_df(df):
             raise ValueError(f"Dataframe column names does not fit")
         self.portfolio_stocks = {}
+        self.watchlist_stocks = [] # all stocks, with and without holding
         for i in range(df.shape[0]):
             df_row = df.iloc[i]
             ticker = df_row["ticker"]
+            self.watchlist_stocks.append(ticker)
             self.portfolio_stocks[ticker] = Portfolio_Stock.from_pd_series(series=df_row)
-            if self.portfolio_stocks[ticker].shares == 0:
+            if self.portfolio_stocks[ticker].shares > 0:
                 # not purchased yet, delete
                 self.portfolio_stocks.pop(ticker)
         
@@ -47,4 +49,7 @@ class Portfolio_Stock_Collection:
     
     def get_all_data_list(self) -> List[Portfolio_Stock]:
         return [*self.portfolio_stocks.values()]
+    
+    def get_watchlist_stocks(self) -> List[str]:
+        return self.watchlist_stocks
     
