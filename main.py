@@ -17,15 +17,15 @@ def main():
         price_collection=stock_price_collection)
 
         
-    timeseries_query = Stock_Query()
-    ts_data_storage = timeseries_query.get_stocks_data(tickers=portfolio_stock_collection.get_watchlist_stocks())
-    strategy = Strategy_A(ts_data_storage)
-    strategy.analyze_stocks(RSI=True, MACD=True, BBAND=True)
-    indicator_result_storage = strategy.get_result_storage()    
+    # timeseries_query = Stock_Query()
+    # ts_data_storage = timeseries_query.get_stocks_data(tickers=portfolio_stock_collection.get_watchlist_stocks())
+    # strategy = Strategy_A(ts_data_storage)
+    # strategy.analyze_stocks(RSI=True, MACD=True, BBAND=True)
+    # indicator_result_storage = strategy.get_result_storage()    
 
 
     email_sender = Email_Sender()
-    msg_constructor = Message_Constructor(sp_collection=performance_result_collection, tech_indicator_collection=indicator_result_storage)
+    msg_constructor = Message_Constructor(sp_collection=performance_result_collection, tech_indicator_collection=None)
     message = msg_constructor.get_action_message()
     email_sender.send_message(msg=message)
     

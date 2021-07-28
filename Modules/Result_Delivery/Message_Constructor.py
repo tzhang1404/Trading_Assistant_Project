@@ -27,7 +27,10 @@ class Message_Constructor():
 
         performance_msg = Message_Constructor.generate_raw_performance_message(sp_list)
 
-        technical_msg = Message_Constructor.generate_technical_analysis_message(tech_indicator_collection)
+        if tech_indicator_collection is not None:
+            technical_msg = Message_Constructor.generate_technical_analysis_message(tech_indicator_collection)
+        else:
+            technical_msg = ""
 
         html = f"""\
                 <html>

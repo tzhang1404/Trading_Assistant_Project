@@ -26,6 +26,7 @@ class Stock_Performance():
     def analyze_realtime_price(self, rt_price_data: IEX_RT_Price):
         self.rt_price_data = rt_price_data
         self.price_delta.using_rt_price(rt_price=rt_price_data.price, comparing_to=self.portfolio_data.purchase_price)
+        print(self.price_delta.rt_price_delta)
         if self.price_delta.rt_price_delta < -(self.portfolio_data.decrease_limit):
             self.performance_result.attach_loss_sell_action(actual_delta=self.price_delta.rt_price_delta)
         

@@ -36,7 +36,7 @@ class Portfolio_Stock_Collection:
             ticker = df_row["ticker"]
             self.watchlist_stocks.append(ticker)
             self.portfolio_stocks[ticker] = Portfolio_Stock.from_pd_series(series=df_row)
-            if self.portfolio_stocks[ticker].shares > 0:
+            if self.portfolio_stocks[ticker].shares == 0:
                 # not purchased yet, delete
                 self.portfolio_stocks.pop(ticker)
         
